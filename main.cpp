@@ -237,7 +237,7 @@ bool render_signed_distance_image(
 	{
 		sw = 2 * h / texture_size;
 	}
-	std::vector<unsigned char> pdata( 4 * texture_size * texture_size, 0 );
+	std::vector<unsigned char> pdata( texture_size * texture_size, 0 );
 	img = &(img_data[0]);
 	for( int j = 0; j < texture_size; ++j )
 	{
@@ -245,14 +245,11 @@ bool render_signed_distance_image(
 		{
 			int sx = i * (w-1) / (texture_size-1);
 			int sy = j * (h-1) / (texture_size-1);
-			int pd_idx = (i+j*texture_size) * 4;
+			int pd_idx = (i+j*texture_size);
 			pdata[pd_idx] =
 				get_SDF_radial
 						( img, w, h,
 						sx, sy, sw );
-			pdata[pd_idx+1] = pdata[pd_idx];
-			pdata[pd_idx+2] = pdata[pd_idx];
-			pdata[pd_idx+3] = pdata[pd_idx];
 		}
 	}
 
@@ -355,7 +352,7 @@ bool render_signed_distance_font(
 
 		//	set up the RAM for the final rendering/compositing
 		//	(use all four channels, so PNG compression is simple)
-		std::vector<unsigned char> pdata( 4 * texture_size * texture_size, 0 );
+		std::vector<unsigned char> pdata( texture_size * texture_size, 0 );
 
 		//	render all the glyphs individually
 		printf( "\nRendering characters into a packed %i^2 image:\n", texture_size );
@@ -404,16 +401,13 @@ bool render_signed_distance_font(
 						{
 							for( int i = 0; i < sdfw; ++i )
 							{
-								int pd_idx = (i+sdfx+(j+sdfy)*texture_size) * 4;
+								int pd_idx = (i+sdfx+(j+sdfy)*texture_size);
 								pdata[pd_idx] =
 									//get_SDF
 									get_SDF_radial
 											( smooth_buf, sw, sh,
 											i*scaler + (scaler >>1), j*scaler + (scaler >>1),
 											2*scaler );
-								pdata[pd_idx+1] = pdata[pd_idx];
-								pdata[pd_idx+2] = pdata[pd_idx];
-								pdata[pd_idx+3] = pdata[pd_idx];
 							}
 						}
 						++packed_glyph_index;

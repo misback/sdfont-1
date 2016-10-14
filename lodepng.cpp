@@ -1894,7 +1894,7 @@ void LodePNG_InfoColor_init(LodePNG_InfoColor* info)
 {
   info->key_defined = 0;
   info->key_r = info->key_g = info->key_b = 0;
-  info->colorType = 6;
+  info->colorType = 0;
   info->bitDepth = 8;
   info->palette = 0;
   info->palettesize = 0;
